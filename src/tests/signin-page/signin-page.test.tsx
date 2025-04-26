@@ -1,5 +1,11 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import SignInPage from '@/app/[locale]/(auth)/signin/page';
@@ -49,17 +55,17 @@ vi.mock('@/context/auth-context', () => ({
   })),
 }));
 
-vi.mock('next/navigation', async () => {
-  const actual = await vi.importActual('next/navigation');
-  return {
-    ...actual,
-    useRouter: () => ({
-      push: vi.fn(),
-      replace: vi.fn(),
-    }),
-    usePathname: () => '/signin',
-  };
-});
+vi.mock('next-intl/navigation', () => ({
+  createNavigation: vi.fn(() => ({
+    useRouter() {
+      return {
+        push: () => vi.fn(),
+        replace: () => vi.fn(),
+      };
+    },
+    usePathname: vi.fn(() => '/signin'),
+  })),
+}));
 
 describe('SignInPage Component', () => {
   beforeEach(() => {
@@ -83,26 +89,26 @@ describe('SignInPage Component', () => {
     });
   });
 
-  /* test('shows password visibility toggle', async () => {
+  test('shows password visibility toggle', async () => {
     render(
       <NextIntlClientProvider locale="en" messages={messages}>
         <SignInPage />
       </NextIntlClientProvider>
-    ); 
-    const passwordInput = screen.getByLabelText('Password');
+    );
+    const passwordInput = screen.getByLabelText('Password') as HTMLInputElement;
     const toggleButton = screen.getByTestId('eye');
-    waitFor(() => {
-      expect(passwordInput).haveOwnProperty('type', 'Password');
+    await waitFor(() => {
+      expect(passwordInput.type).toBe('password');
     });
 
     fireEvent.click(toggleButton);
-    waitFor(() => {
-      expect(passwordInput).haveOwnProperty('type', 'text');
+    await waitFor(() => {
+      expect(passwordInput.type).toBe('text');
     });
 
     fireEvent.click(toggleButton);
-    waitFor(() => {
-      expect(passwordInput).haveOwnProperty('type', 'password');
+    await waitFor(() => {
+      expect(passwordInput.type).toBe('password');
     });
-  }); */
+  });
 });

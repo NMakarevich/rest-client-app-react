@@ -1,5 +1,11 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { User } from 'firebase/auth';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
@@ -7,8 +13,21 @@ import WelcomePage from '@/app/[locale]/page';
 
 vi.mock('@/context/auth-context', () => ({
   useAuth: vi.fn(() => ({
-    user: {} as User,
+    user: {
+      displayName: 'Test',
+    } as User,
     loading: false,
+  })),
+}));
+
+vi.mock('next-intl/navigation', () => ({
+  createNavigation: vi.fn(() => ({
+    useRouter: vi.fn(() => ({
+      push: () => vi.fn(),
+      replace: () => vi.fn(),
+    })),
+    usePathname: vi.fn(() => '/'),
+    Link: vi.fn(),
   })),
 }));
 
@@ -54,6 +73,8 @@ const messages = {
       name: 'Julia',
       task1: 'Welcome page',
       task2: 'Localization',
+      task3: 'Authorization',
+      task4: 'Main route',
       description:
         'Hello, my name is Yuliya. I am a self-taught front-end developer. I primarily focus on writing clean, elegant, and efficient code. I am proficient in HTML, CSS, SCSS, JavaScript, React and Type Script. And I get real pleasure from the results of my work.',
     },
@@ -86,7 +107,7 @@ describe('WelcomePage Component', () => {
     );
 
     const teamTab = screen.getByText('Team');
-    teamTab.click();
+    fireEvent.click(teamTab);
     await waitFor(() => {
       expect(screen.getByText('Our Team')).toBeTruthy();
       expect(
