@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
 
 import { RESTFUL_METHODS } from '@/constants/constants';
 import { useAuth } from '@/context/auth-context';
+import { usePathname, useRouter } from '@/i18n/navigation';
 
 import { Loader } from '../shared/loader';
 
@@ -27,18 +27,18 @@ export function ProtectedRoutes({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (loading) return;
 
-    const basePath = `/${pathname.split('/')[2] || ''}`;
+    const basePath = `/${pathname.split('/')[1] || ''}`;
 
     const isAuthRoute = authRoutes.includes(basePath);
     const isNoAuthRoute = noAuthRoutes.includes(basePath);
 
     if (user && isNoAuthRoute) {
-      router.replace('/');
+      router.push('/');
       return;
     }
 
     if (!user && isAuthRoute) {
-      router.replace('/');
+      router.push('/');
       return;
     }
 

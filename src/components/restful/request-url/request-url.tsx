@@ -14,7 +14,9 @@ export function RequestUrl({ url }: { url: string }) {
   const {
     register,
     getValues,
-    formState: { errors, isValid },
+    setError,
+    clearErrors,
+    formState: { errors },
   } = useForm({
     defaultValues: { API_URL: url },
     mode: 'onChange',
@@ -26,18 +28,19 @@ export function RequestUrl({ url }: { url: string }) {
   const t = useTranslations('restfulPage');
 
   const handleBlur = useCallback(() => {
-    if (isValid) {
-      const { target, isAllInserted } = insertVariables(
-        getValues('API_URL') as string
-      );
-      const url = URL.parse(target);
-      if (!isAllInserted || !url) return;
-      const newUrl = updateUrl({
-        apiUrl: target,
-      });
-      window.history.replaceState(null, '', newUrl);
-    }
-  }, [getValues, insertVariables, isValid]);
+    const { target, isAllInserted } = insertVariables(
+      getValues('API_URL') as string
+    );
+    const url = URL.parse(target);
+    if (!isAllInserted || !url) {
+      setError('API_URL', { message: 'urlError' });
+      return;
+    } else clearErrors();
+    const newUrl = updateUrl({
+      apiUrl: target,
+    });
+    window.history.replaceState(null, '', newUrl);
+  }, [clearErrors, getValues, insertVariables, setError]);
 
   return (
     <div className={'flex flex-col flex-1 relative w-full'}>

@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { FirebaseError } from '@firebase/app';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { ProtectedRoutes } from '@/components/protected-routes';
 import { Button } from '@/components/ui/button';
+import { useRouter } from '@/i18n/navigation';
 import { signInWithEmail } from '@/lib/auth';
 import { SignInFormData, useValidationSchemas } from '@/lib/validation-auth';
 

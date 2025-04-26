@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
 import {
   cleanup,
@@ -7,7 +8,15 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { User } from 'firebase/auth';
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  Mock,
+  test,
+  vi,
+} from 'vitest';
 
 import SignUpPage from '@/app/[locale]/(auth)/signup/page';
 
@@ -28,17 +37,31 @@ vi.mock('@/context/auth-context', () => ({
   })),
 }));
 
-vi.mock('next/navigation', async () => {
-  const actual = await vi.importActual('next/navigation');
+vi.mock('next-intl/navigation', () => ({
+  createNavigation: vi.fn(() => ({
+    useRouter() {
+      return {
+        push: () => vi.fn(),
+        replace: () => vi.fn(),
+      };
+    },
+    usePathname: vi.fn(() => '/signup'),
+  })),
+}));
+
+vi.mock('react', async (importOriginal) => {
+  const actual = await importOriginal();
   return {
-    ...actual,
-    useRouter: () => ({
-      push: vi.fn(),
-      replace: vi.fn(),
-    }),
-    usePathname: () => '/signup',
+    actual,
+    useEffect: vi.fn(),
+    useState: vi.fn(),
   };
 });
+
+const useStateMock: Mock<typeof useState> = useState as never;
+
+const setValue = vi.fn();
+useStateMock.mockImplementation(() => [false, setValue]);
 
 const messages = {
   loading: 'Loading...',

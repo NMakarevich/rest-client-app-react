@@ -13,20 +13,23 @@ vi.mock('@/context/auth-context', () => ({
   })),
 }));
 
+vi.mock('next-intl/navigation', () => ({
+  createNavigation: vi.fn(() => ({
+    useRouter() {
+      return {
+        push: () => vi.fn(),
+        replace: () => vi.fn(),
+      };
+    },
+    usePathname: vi.fn(() => '/history'),
+  })),
+}));
+
 vi.mock('next/navigation', async () => {
   const actual =
     await vi.importActual<typeof actualNavigation>('next/navigation');
   return {
     ...actual,
-    useRouter: vi.fn(() => ({
-      push: vi.fn(),
-      replace: vi.fn(),
-      back: vi.fn(),
-      forward: vi.fn(),
-      refresh: vi.fn(),
-      prefetch: vi.fn(),
-    })),
-    usePathname: vi.fn(() => '/'),
     useSearchParams: vi.fn(() => new URLSearchParams()),
   };
 });

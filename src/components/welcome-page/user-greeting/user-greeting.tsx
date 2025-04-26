@@ -1,7 +1,7 @@
 'use client';
-
-import Link from 'next/link';
 import { User } from 'firebase/auth';
+
+import { Link } from '@/i18n/navigation';
 
 type UserGreetingProps = {
   user: User;

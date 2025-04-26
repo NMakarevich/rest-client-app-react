@@ -18,23 +18,30 @@ export function RequestBody({ body = '' }: { body: string }) {
   const t = useTranslations('restfulPage');
   const { insertVariables } = useVariables();
 
-  const handleClick = useCallback(() => {
-    setValue(prettify(value));
-  }, [value]);
-
   const handleChange = useCallback((value: string) => {
     setValue(value);
   }, []);
 
-  const handleBlur = useCallback(() => {
-    const { target, isAllInserted } = insertVariables(value, true);
-    if (isAllInserted) {
-      const newUrl = updateUrl({
-        requestBody: target || '',
-      });
-      window.history.replaceState(null, '', newUrl);
-    }
-  }, [insertVariables, value]);
+  const handleBlur = useCallback(
+    (needPrettify = false) => {
+      const { target, isAllInserted } = insertVariables(
+        needPrettify ? prettify(value) : value,
+        true
+      );
+      if (isAllInserted) {
+        const newUrl = updateUrl({
+          requestBody: target || '',
+        });
+        window.history.replaceState(null, '', newUrl);
+      }
+    },
+    [insertVariables, value]
+  );
+
+  const handleClick = useCallback(() => {
+    setValue(prettify(value));
+    handleBlur(true);
+  }, [handleBlur, value]);
 
   const handleSwitchChange = useCallback((checked: boolean) => {
     setMode(checked ? 'text' : 'json');
@@ -58,7 +65,7 @@ export function RequestBody({ body = '' }: { body: string }) {
         value={value}
         height={'140px'}
         onChangeAction={handleChange}
-        onBlurAction={handleBlur}
+        onBlurAction={() => handleBlur()}
         lang={mode}
       />
     </div>

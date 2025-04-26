@@ -12,7 +12,7 @@ import { LOCAL_STORAGE_KEYS } from '@/constants/constants';
 import useLocalStorage from '@/hooks/local_storage';
 import { Variable, VariableItemProps } from '@/types/types';
 
-import { validationSchema } from './variable_validation_shema';
+import { editValidationSchema } from './variable_validation_shema';
 
 export const VariableItem: React.FC<VariableItemProps> = ({
   variable,
@@ -29,9 +29,10 @@ export const VariableItem: React.FC<VariableItemProps> = ({
     register,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(editValidationSchema),
     mode: 'onChange',
   });
 
@@ -55,9 +56,16 @@ export const VariableItem: React.FC<VariableItemProps> = ({
         ? { ...item, name: data.name, value: data.value }
         : item
     );
-    setLocalStorageVariables(updatedVariables);
-    setVariables(updatedVariables);
-    setIsEditing(false);
+    if (
+      updatedVariables.filter((variable) => variable.name === data.name)
+        .length === 1
+    ) {
+      setLocalStorageVariables(updatedVariables);
+      setVariables(updatedVariables);
+      setIsEditing(false);
+    } else {
+      setError('name', { message: 'varNameExist' });
+    }
   };
 
   return (
