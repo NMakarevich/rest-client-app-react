@@ -1,9 +1,9 @@
 'use client';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+
 import { useTranslations } from 'next-intl';
 
 import { useAuth } from '@/context/auth-context';
+import { Link, useRouter } from '@/i18n/navigation';
 import { signOut } from '@/lib/auth';
 
 export function AuthNav() {
@@ -39,8 +39,9 @@ export function AuthNav() {
         <>
           <Link
             href="/signup"
+            scroll={false}
             className={
-              'text-cyan-800  text-xl font-medium hover:text-cyan-600  cursor-pointer'
+              'text-cyan-800  text-xl font-medium hover:text-cyan-600  cursor-pointer '
             }
           >
             {t('signup')}
@@ -48,8 +49,9 @@ export function AuthNav() {
 
           <Link
             href="/signin"
+            scroll={false}
             className={
-              'text-cyan-800  text-xl font-medium hover:text-cyan-600 cursor-pointer'
+              'text-cyan-800  text-xl font-medium hover:text-cyan-600 cursor-pointer '
             }
           >
             {t('signin')}

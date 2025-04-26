@@ -8,7 +8,7 @@ import { LanguageSelect } from './select-lang';
 
 export function Header() {
   return (
-    <header className="flex flex-0 w-full justify-between flex-wrap px-5 py-3 gap-4 items-center">
+    <header className="flex flex-0 w-full justify-between flex-wrap px-5 py-3 gap-4 items-center relative">
       <HeaderLogo />
       <Suspense>
         <AuthNav />
