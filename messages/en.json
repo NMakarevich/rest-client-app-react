@@ -6,7 +6,7 @@
   },
   "welcomePage": {
     "description_restAppText": "A powerful REST API integrated development environment (IDE). This tool provides everything you need to build, test, and debug RESTful services. Key features: smart code completion, interactive API testing, built-in documentation, and team collaboration support. Perfect for developers, testers, and API architects.",
-    "description_ourTeamText": "Our team consists of experienced developers specializing in modern web applications. We use cutting-edge technologies and best development practices. Each team member contributes to creating a high-quality product. Our specializations include: frontend, UX/UI design, and testing.",
+    "description_ourTeamText": "Our team consists of experienced developers specializing in modern web applications. We use cutting-edge technologies and best development practices. The IT React course in RSSchool is a great opportunity to master modern frontend development. The program covers key aspects: from JavaScript and React basics to advanced topics like state management (Redux, Context API) and working with APIs. Link you can find in the bottom",
     "title_main": {
       "rest": "REST Client App",
       "team": "Our Team"
