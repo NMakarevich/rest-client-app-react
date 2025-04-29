@@ -20,12 +20,12 @@ export default function WelcomePage() {
   };
 
   useEffect(() => {
-    console.log(user);
+    console.log('user', user);
     setUserName(user?.displayName);
   }, [user]);
 
   useEffect(() => {
-    console.log(userName);
+    console.log('userName', userName);
   }, [userName]);
 
   if (loading) {
