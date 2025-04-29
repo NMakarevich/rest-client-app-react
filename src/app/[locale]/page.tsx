@@ -24,6 +24,10 @@ export default function WelcomePage() {
     setUserName(user?.displayName);
   }, [user]);
 
+  useEffect(() => {
+    console.log(userName);
+  }, [userName]);
+
   if (loading) {
     return <Loader />;
   }
