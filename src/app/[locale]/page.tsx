@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Loader } from '@/components/shared/loader';
@@ -12,12 +12,16 @@ import { developers } from '@/utils';
 export default function WelcomePage() {
   const t = useTranslations('welcomePage');
   const { user, loading } = useAuth();
-  console.log(user);
+  const [userName, setUserName] = useState(user?.displayName);
   const [activeTab, setActiveTab] = useState<'rest' | 'team'>('rest');
 
   const handleTabChange = (tab: 'rest' | 'team') => {
     setActiveTab(tab);
   };
+
+  useEffect(() => {
+    setUserName(user?.displayName);
+  }, [user]);
 
   if (loading) {
     return <Loader />;
@@ -72,7 +76,7 @@ export default function WelcomePage() {
       </div>
 
       <div className="flex flex-wrap justify-center gap-5 w-full max-w-7xl">
-        {user && <UserGreeting user={user} t={t} />}
+        {!!userName && user && <UserGreeting user={user} t={t} />}
       </div>
 
       <h2 className="w-full text-center text-xl">{t('title1')}</h2>
