@@ -20,6 +20,7 @@ export default function WelcomePage() {
   };
 
   useEffect(() => {
+    console.log(user);
     setUserName(user?.displayName);
   }, [user]);
 

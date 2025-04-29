@@ -9,7 +9,6 @@ type UserGreetingProps = {
 };
 
 export const UserGreeting = ({ user, t }: UserGreetingProps) => {
-  console.log(user.displayName);
   return (
     <>
       <p className="w-full text-center text-3xl">
