@@ -12,6 +12,7 @@ import { developers } from '@/utils';
 export default function WelcomePage() {
   const t = useTranslations('welcomePage');
   const { user, loading } = useAuth();
+  console.log(user);
   const [activeTab, setActiveTab] = useState<'rest' | 'team'>('rest');
 
   const handleTabChange = (tab: 'rest' | 'team') => {
