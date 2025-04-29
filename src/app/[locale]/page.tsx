@@ -21,8 +21,8 @@ export default function WelcomePage() {
 
   useEffect(() => {
     if (user) {
-      console.log('user', user, user?.displayName);
-      console.log('displayName', user?.displayName);
+      console.log('user', user, user.displayName);
+      console.log('displayName', user.displayName);
     }
     setUserName(user?.displayName);
   }, [user]);
